@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title><%= "The Gossip Project" %></title>
+  <script src="script.js"></script>
+</head>
+<body>
+<br>
+<h1> Profil </h1>
+<!-- Card -->
+<div class="card testimonial-card">
+
+  <!-- Background color -->
+  <div class="card-up indigo lighten-1"></div>
+<br>
+  <!-- Avatar -->
+  <div class="avatar mx-auto white">
+    <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg" class="rounded-circle"
+      alt="woman avatar">
+  </div>
+
+  <!-- Content -->
+  <div class="card-body">
+    <!-- Name -->
+    <h3 class="card-title"><%="#{@city.name}"%></h3>
+    <hr>
+    <div class="row">
+  <% @gossips.each do |goss|%>
+<div class="row">
+<!-- creation mini carte gossip -->
+<div class="card text-left m-5" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title"><%= goss.title%></h5>
+      <p class="card-text"><%= goss.user[:first_name]%></p>
+      <p class="card-text"><small class="text-muted"><%= goss.create_date.strftime("%d/%m/%Y")%></small></p>
+      <%= link_to "Accéder au gossip", gossip_path(goss.id), :class =>"btn btn-secondary btn-lg active" %>
+      <p><%= goss.like.count %> <%= (goss.like.count) == 1 ? 'Like' : 'Likes'%></p>
+      <p class="card-text"> <%= goss.comment_ids.count%> commentaires</p>
+      <% if logged_in? == true %>
+<% pre_like = goss.like.find { |like| like.user_id == current_user.id} %>
+        <% if pre_like %>
+         <%= button_to 'Unlike', gossip_like_path(goss, pre_like), method: :delete %>
+<% else %>
+  <%= button_to 'Like', gossip_like_index_path(goss), method: :post %>
+<% end %>
+<% end %>
+    </div>
+  </div>
+  </div>
+      <% end %>
+    <!-- Quotation -->
+    <p>
+    </p>
+    <%= link_to "Revenir à l'accueil", landing_path(:first_name_id), :class => 'btn btn-info'%>
+  </div>
+</div>
+
+</div>
+
+</div>
+<!-- Card -->
+</body>
+</html>
